@@ -29,4 +29,15 @@ public class CourseService {
     public Course getCourseById(Long id) {
         return courseRepository.findById(id).orElseThrow(() -> new CourseNotFoundException("Course with id "+ id+ " not found"));
     }
+
+    public Course updateCourse(Long id, Course course) {
+        Course courseToUpdate = getCourseById(id);
+        courseToUpdate.setName(course.getName());
+        courseToUpdate.setDescription(course.getDescription());
+        courseToUpdate.setStartDate(course.getStartDate());
+        courseToUpdate.setEndDate(course.getEndDate());
+        return courseRepository.save(courseToUpdate);
+    }
+
+
 }
