@@ -3,7 +3,6 @@ package lt.vidunas.courses.controllers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lt.vidunas.courses.entities.Course;
-import lt.vidunas.courses.entities.Student;
 import lt.vidunas.courses.services.CourseService;
 import lt.vidunas.courses.services.EnrollmentService;
 import org.springframework.http.HttpStatus;
@@ -44,9 +43,16 @@ public class CourseController {
         return ResponseEntity.ok(course);
     }
 
-    @PostMapping("{id}/enrollments")
+    @PostMapping("/{id}/enrollments")
     public ResponseEntity<String> enrollStudent(@PathVariable Long id, @RequestBody Long studentId) {
         enrollmentService.enrollStudentInCourse(id, studentId);
         return ResponseEntity.status(HttpStatus.CREATED).body("Student successfully enrolled");
+    }
+
+
+    @DeleteMapping("/{id}/enrollments")
+    public ResponseEntity<String> unenrollStudent(@PathVariable Long id, @RequestBody Long studentId) {
+        enrollmentService.removeStudentFromCourse(id, studentId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Student successfully removed from the course");
     }
 }
