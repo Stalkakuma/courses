@@ -1,5 +1,6 @@
 package lt.vidunas.courses.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lt.vidunas.courses.entities.Course;
 import lt.vidunas.courses.services.CourseService;
@@ -22,7 +23,7 @@ public class CourseController {
     }
 
     @PostMapping
-    public ResponseEntity<Course> createCourse(@RequestBody Course course) {
+    public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course) {
         courseService.saveCourse(course);
         return ResponseEntity.status(HttpStatus.CREATED).body(course);
     }
