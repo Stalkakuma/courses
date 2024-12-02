@@ -3,7 +3,9 @@ package lt.vidunas.courses.controllers;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lt.vidunas.courses.entities.Course;
+import lt.vidunas.courses.entities.Student;
 import lt.vidunas.courses.services.CourseService;
+import lt.vidunas.courses.services.EnrollmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ import java.util.List;
 public class CourseController {
 
     private final CourseService courseService;
+    private final EnrollmentService enrollmentService;
 
     @GetMapping
     public ResponseEntity<List<Course>> getAllCourses() {
@@ -39,5 +42,11 @@ public class CourseController {
     public ResponseEntity<Course> updateCourse(@PathVariable Long id, @Valid @RequestBody Course course) {
         courseService.updateCourse(id, course);
         return ResponseEntity.ok(course);
+    }
+
+    @PostMapping("{id}/enrollments")
+    public ResponseEntity<String> enrollStudent(@PathVariable Long id, @RequestBody Long studentId) {
+        enrollmentService.enrollStudentInCourse(id, studentId);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Student successfully enrolled");
     }
 }

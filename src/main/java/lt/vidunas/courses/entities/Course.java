@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,4 +24,21 @@ public class Course {
     private String type;
     private Date startDate;
     private Date endDate;
+
+    @ManyToMany
+    @JoinTable(
+            name = "student_course",
+            joinColumns = @JoinColumn(name = "course_id"),
+    inverseJoinColumns = @JoinColumn(name = "student_id"))
+    private List<Student> students;
+
+    public void addStudent(Student student) {
+        students.add(student);
+        student.getCourses().add(this);
+    }
+
+    public void removeStudent(Student student) {
+        students.remove(student);
+        student.getCourses().remove(this);
+    }
 }
